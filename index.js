@@ -299,10 +299,9 @@ var wordArray = [ "the",
 "turned" ];
 
 var commands = [ {keyCommand:"I", textCommand:"Prints instructions *required."}, {keyCommand:"S", textCommand:"This will start the program."}, {keyCommand:"B", textCommand:"Add you own words to the list."}  ];
+window.addEventListener("keypress", keyPresses, false);
 
 instructions();
-keyCommand_S()
-
 
 
 
@@ -349,6 +348,28 @@ function instructions() {
         element.appendChild(listOptions);
     }
 }
+function keyPresses(e) {
+        // var key = e.key;
+        // if (key == 38) {
+        //     playerSpriteX += 10;
+        // }
+        // else if (key == 40) {
+        //     playerSpriteX -= 10;
+        console.log(e.key);
+}
+
+
+    // switch (e.key) {
+    //     case "s":
+    //         keyCommand_S();
+    //         break;
+    //     case "s":
+    //         keyCommand_S();
+    //         break;
+    //     default:
+    //         console.log(e.key);
+    // }
+
 
 function keyCommand_S() { //click will be a funciton
 
@@ -361,9 +382,9 @@ function keyCommand_S() { //click will be a funciton
             var node = document.createTextNode(" ____ ");
             createNumLines.appendChild(node);
         }
-        element.appendChild(createNumLines);
-    }
+    element.appendChild(createNumLines);
     gameDisplay.style.display = 'inline';
+}
 
     // element.style.display = 'block';          // Show
     // element.style.display = 'inline';         // Show
