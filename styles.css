@@ -75,6 +75,10 @@
 .cardCustom {
     width: 100%;
 }
-#word { 
+#word {
     background-color: #808B96;
+}
+
+#line {
+    font-size: 25px;
 }

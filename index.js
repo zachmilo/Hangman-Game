@@ -349,27 +349,20 @@ function instructions() {
     }
 }
 function keyPresses(e) {
-        // var key = e.key;
-        // if (key == 38) {
-        //     playerSpriteX += 10;
-        // }
-        // else if (key == 40) {
-        //     playerSpriteX -= 10;
-        console.log(e.key);
+    var key = e.key.toLowerCase();
+    switch (key) {
+        case "s":
+            keyCommand_S();
+            break;
+        case "i":
+            keyCommand_I();
+            break;
+        default:
+            console.log(key);
+
+    }
+
 }
-
-
-    // switch (e.key) {
-    //     case "s":
-    //         keyCommand_S();
-    //         break;
-    //     case "s":
-    //         keyCommand_S();
-    //         break;
-    //     default:
-    //         console.log(e.key);
-    // }
-
 
 function keyCommand_S() { //click will be a funciton
 
@@ -378,12 +371,16 @@ function keyCommand_S() { //click will be a funciton
     var createNumLines = document.createElement("p");
     var element = document.getElementById("lines");
 
-    for(var letter in word) {
+    for(var letter in word.resultWord) {
             var node = document.createTextNode(" ____ ");
             createNumLines.appendChild(node);
         }
+
     element.appendChild(createNumLines);
     gameDisplay.style.display = 'inline';
+
+    window.removeEventListener("keypress", keyPresses, false);
+    window.addEventListener("keypress", function(e){ guessing(e,word) },false);
 }
 
     // element.style.display = 'block';          // Show
@@ -395,8 +392,53 @@ function keyCommand_S() { //click will be a funciton
 
 function buildWord(isCaptal,numOfCap) {
     var theDesider = Math.floor((Math.random() * (wordArray.length-1)) + 0);
-    return wordArray[theDesider];
+    var dashedWord = [];
+    for (var word in wordArray[theDesider]) {
+        dashedWord.push(" _ ");
+    }
+    return { dashed:dashedWord, resultWord: wordArray[theDesider] };
 }
+
+function guessing(e,word) {
+    console.log(word);
+    var letterGuess = word.resultWord.indexOf(e.key);
+    console.log("guessing "+ e.key);
+
+    if(letterGuess != -1) {
+        var what = word.resultWord.charAt(letterGuess);
+        word.dashed[letterGuess] = what;
+    } else {
+        return -1;
+    }
+
+    var createNumLines = document.createElement("h3");
+    var element = document.getElementById("lines");
+
+    for (var display in word.dashed) {
+
+            if(word.dashed[display] === "_") {
+                var node = document.createTextNode(" ____ ");
+
+            }
+            else {
+                    var node = document.createTextNode("  "+ word.dashed[display] +"  ");
+             }
+             createNumLines.appendChild(node);
+    }
+
+    element.innerHTML = createNumLines.innerHTML;
+}
+    //
+    // for(var letter in word) {
+    //         // will have to adda loop here for multiple letters
+    //         if(word[letter] === word[letterGuess]) {
+    //                 var node = document.createTextNode("  "+ word[letter] +"  ");
+    //         }else {
+    //             var node = document.createTextNode(" ____ ");
+    //         }
+    //         createNumLines.appendChild(node);
+    // }
+
 
 
 
