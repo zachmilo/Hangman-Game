@@ -300,9 +300,8 @@ var wordArray = [ "the",
 
 var commands = [ {keyCommand:"I", textCommand:"Prints instructions *required."}, {keyCommand:"S", textCommand:"This will start the program."}, {keyCommand:"B", textCommand:"Add you own words to the list."}  ];
 
-startOfGame();
-
-
+instructions();
+keyCommand_S()
 
 
 
@@ -335,9 +334,13 @@ startOfGame();
 // first option will need a callback function
 var userInput = [];
 
-function startOfGame(){
+function instructions() {
+
     var banner = document.getElementById("banner").innerHTML = "Welcome Menu";
-    var listOptions = document.createElement("li");
+    var gameDisplay = document.getElementById("gameDisplay")
+
+    gameDisplay.style.display = 'none';
+
     for (var command in commands) {
         var listOptions = document.createElement("li");
         var node = document.createTextNode("Press Key: " + commands[command].keyCommand + " to " + commands[command].textCommand);
@@ -347,12 +350,40 @@ function startOfGame(){
     }
 }
 
+function keyCommand_S() { //click will be a funciton
+
+    var gameDisplay = document.getElementById("gameDisplay")
+    var word = buildWord();
+    var createNumLines = document.createElement("p");
+    var element = document.getElementById("lines");
+
+    for(var letter in word) {
+            var node = document.createTextNode(" ____ ");
+            createNumLines.appendChild(node);
+        }
+        element.appendChild(createNumLines);
+    }
+    gameDisplay.style.display = 'inline';
+
+    // element.style.display = 'block';          // Show
+    // element.style.display = 'inline';         // Show
+    // element.style.display = 'inline-block';   // Show
+    //
+    //
+
+
+function buildWord(isCaptal,numOfCap) {
+    var theDesider = Math.floor((Math.random() * (wordArray.length-1)) + 0);
+    return wordArray[theDesider];
+}
+
+
+
+
 function formatUserInput(userInput) {
 
 }
-for (x in wordArray) {
-    console.log(wordArray[x]);
-}
+
 
 //add in function has capital and print num of capz
 //right function to generate numbertil capz
