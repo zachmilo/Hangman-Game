@@ -75,10 +75,13 @@
 .cardCustom {
     width: 100%;
 }
-#word {
+#backgroundColor {
     background-color: #808B96;
 }
 
 #line {
     font-size: 25px;
+}
+#instructions {
+    float: left;
 }

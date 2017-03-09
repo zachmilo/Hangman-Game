@@ -335,10 +335,10 @@ var userInput = [];
 
 function instructions() {
 
-    var banner = document.getElementById("banner").innerHTML = "Welcome Menu";
+    document.getElementById("banner").innerHTML = "Welcome";
     var gameDisplay = document.getElementById("gameDisplay")
 
-    gameDisplay.style.display = 'none';
+    gameDisplay.style.visibility = 'hidden';
 
     for (var command in commands) {
         var listOptions = document.createElement("li");
@@ -363,26 +363,45 @@ function keyPresses(e) {
     }
 
 }
-
-function keyCommand_S() { //click will be a funciton
-
+function clearDisplayBoard(idToGet) {
+    elements =document.getElementById(idToGet).childNodes;
+    for (element in elements) {
+            elements.removeChild(element);
+    }
+}
+function keyCommand_S() {
+    clearDisplayBoard("lines");
     var gameDisplay = document.getElementById("gameDisplay")
     var word = buildWord();
     var createNumLines = document.createElement("p");
     var element = document.getElementById("lines");
-
     for(var letter in word.resultWord) {
             var node = document.createTextNode(" ____ ");
             createNumLines.appendChild(node);
         }
 
     element.appendChild(createNumLines);
-    gameDisplay.style.display = 'inline';
+    gameDisplay.style.visibility = 'visible';
 
     window.removeEventListener("keypress", keyPresses, false);
     window.addEventListener("keypress", function(e){ guessing(e,word) },false);
 }
+function keyCommand_I () {
 
+    var instructions = document.getElementById("instructions");
+    document.getElementById("gameBanner").innerHTML = "How to Play";
+    var createp = document.createElement("p");
+    var element = document.getElementById("lines");
+
+    var stringText = `Press the "s" key to begin the game it will display a number of lines representing the number of letters.
+                      Press keys on keyboard to begin guessing, but be careful becuase you only have a certian amount of guesses.`;
+    var node = document.createTextNode(stringText);
+    createp.appendChild(node);
+
+
+    element.innerHTML = createp.innerHTML;
+    gameDisplay.style.visibility = 'visible';
+}
     // element.style.display = 'block';          // Show
     // element.style.display = 'inline';         // Show
     // element.style.display = 'inline-block';   // Show
@@ -391,27 +410,31 @@ function keyCommand_S() { //click will be a funciton
 
 
 function buildWord(isCaptal,numOfCap) {
+
     var theDesider = Math.floor((Math.random() * (wordArray.length-1)) + 0);
     var dashedWord = [];
     for (var word in wordArray[theDesider]) {
-        dashedWord.push(" _ ");
+        dashedWord.push("_");
     }
     return { dashed:dashedWord, resultWord: wordArray[theDesider] };
 }
 
 function guessing(e,word) {
-    console.log(word);
-    var letterGuess = word.resultWord.indexOf(e.key);
-    console.log("guessing "+ e.key);
 
-    if(letterGuess != -1) {
-        var what = word.resultWord.charAt(letterGuess);
-        word.dashed[letterGuess] = what;
-    } else {
-        return -1;
+    var getAllLetters = [];
+    var createNumLines = document.createElement("p");
+    var element = document.getElementById("lines");
+
+    console.log(word);
+
+    for (var letter in word.resultWord) {
+        if (e.key === word.resultWord.charAt(letter)) {
+
+            word.dashed[letter] = word.resultWord.charAt(letter);
+        }
     }
 
-    var createNumLines = document.createElement("h3");
+    var createNumLines = document.createElement("p");
     var element = document.getElementById("lines");
 
     for (var display in word.dashed) {
@@ -428,20 +451,6 @@ function guessing(e,word) {
 
     element.innerHTML = createNumLines.innerHTML;
 }
-    //
-    // for(var letter in word) {
-    //         // will have to adda loop here for multiple letters
-    //         if(word[letter] === word[letterGuess]) {
-    //                 var node = document.createTextNode("  "+ word[letter] +"  ");
-    //         }else {
-    //             var node = document.createTextNode(" ____ ");
-    //         }
-    //         createNumLines.appendChild(node);
-    // }
-
-
-
-
 
 function formatUserInput(userInput) {
 
@@ -451,4 +460,4 @@ function formatUserInput(userInput) {
 //add in function has capital and print num of capz
 //right function to generate numbertil capz
 //Genereate word
-// build a python script to allow others to generate their own words
+//have users add thier own list;
