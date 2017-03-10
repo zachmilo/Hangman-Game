@@ -299,20 +299,22 @@ var wordArray = [ "the",
 "turned" ];
 
 var commands = [ {keyCommand:"I", textCommand:"Prints instructions *required."}, {keyCommand:"S", textCommand:"This will start the program."}, {keyCommand:"B", textCommand:"Add you own words to the list."}  ];
-window.addEventListener("keypress", keyPresses, false);
 
 instructions();
 
-// first option will need a callback function
-var userInput = [];
+var numCount = 0;
+var gameOver = false;
 
+function run() {
+    instructions()
+}
 function instructions() {
+    document.addEventListener("keypress", keyPresses, false);
 
     document.getElementById("banner").innerHTML = "Welcome";
     var gameDisplay = document.getElementById("gameDisplay")
 
     gameDisplay.style.visibility = 'hidden';
-
     for (var command in commands) {
         var listOptions = document.createElement("li");
         var node = document.createTextNode("Press Key: " + commands[command].keyCommand + " to " + commands[command].textCommand);
@@ -321,32 +323,34 @@ function instructions() {
         element.appendChild(listOptions);
     }
 }
+
 function keyPresses(e) {
     var key = e.key.toLowerCase();
-    switch (key) {
-        case "s":
-            keyCommand_S();
-            break;
-        case "i":
-            keyCommand_I();
-            break;
-        default:
-            console.log(key);
-
+    if(key === "s") {
+        var word = keyCommand_S();
+        document.removeEventListener("keypress", keyPresses);
+        document.addEventListener("keypress", function test(e) {
+             guessing(e,word);
+             if(gameOver) {
+                 document.removeEventListener("keypress", test);
+                 document.addEventListener("keypress", keyPresses);
+                 gameOver = false;
+             }
+         });
     }
-
+    else if(key ==="i"){
+            keyCommand_I();
+    }
 }
-function clearDisplayBoard(idToGet) {
 
-    var x = document.getElementById("lines");
-    console.log(x);
-}
 function keyCommand_S() {
 
-    clearDisplayBoard("lines");
-
-    var gameDisplay = document.getElementById("gameDisplay")
+    var gameDisplay = document.getElementById("gameDisplay");
     var word = buildWord();
+    numCount= (word.resultWord.length) * 2;
+
+    document.getElementById("gameBanner").innerHTML = "Begin you get "+numCount;
+
     var createNumLines = document.createElement("p");
     var element = document.getElementById("lines");
 
@@ -355,12 +359,10 @@ function keyCommand_S() {
             createNumLines.appendChild(node);
     }
 
-    //element.appendChild(createNumLines);
     element.innerHTML = createNumLines.innerHTML;
-    gameDisplay.style.visibility = 'visible';
 
-    window.removeEventListener("keypress", keyPresses, false);
-    window.addEventListener("keypress", function(e){ guessing(e,word) },false);
+    gameDisplay.style.visibility = 'visible';
+    return word;
 }
 
 function keyCommand_I () {
@@ -379,12 +381,6 @@ function keyCommand_I () {
     element.innerHTML = createp.innerHTML;
     gameDisplay.style.visibility = 'visible';
 }
-    // element.style.display = 'block';          // Show
-    // element.style.display = 'inline';         // Show
-    // element.style.display = 'inline-block';   // Show
-    //
-    //
-
 
 function buildWord(isCaptal,numOfCap) {
 
@@ -396,7 +392,7 @@ function buildWord(isCaptal,numOfCap) {
     return { dashed:dashedWord, resultWord: wordArray[theDesider] };
 }
 
-function guessing(e,word) {
+function guessing(e, word) {
 
     var getAllLetters = [];
     var createNumLines = document.createElement("p");
@@ -427,9 +423,30 @@ function guessing(e,word) {
     }
 
     element.innerHTML = createNumLines.innerHTML;
+    countTrack(word.resultWord);
 }
 
-function formatUserInput(userInput) {
+function countTrack(word) {
+
+    numCount--;
+    document.getElementById("gameBanner").innerHTML = "Guesses Left: "+numCount;
+
+    if(0 === numCount) {
+        var createNumLines = document.createElement("p");
+        var element = document.getElementById("lines");
+        var node = document.createTextNode("Game Over");
+
+        createNumLines.appendChild(node);
+        element.innerHTML = createNumLines.innerHTML;
+        document.getElementById("gameBanner").innerHTML = "Guesses Left: none";
+
+        createNumLines = document.createElement("p");
+        element = document.getElementById("lines");
+        node = document.createTextNode("Game Over!!! Press s to play a new game");
+        document.getElementsByTagName("p")
+        numCount = 0;
+        gameOver = true;
+    }
 
 }
 
