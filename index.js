@@ -303,33 +303,6 @@ window.addEventListener("keypress", keyPresses, false);
 
 instructions();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // first option will need a callback function
 var userInput = [];
 
@@ -364,28 +337,32 @@ function keyPresses(e) {
 
 }
 function clearDisplayBoard(idToGet) {
-    elements =document.getElementById(idToGet).childNodes;
-    for (element in elements) {
-            elements.removeChild(element);
-    }
+
+    var x = document.getElementById("lines");
+    console.log(x);
 }
 function keyCommand_S() {
+
     clearDisplayBoard("lines");
+
     var gameDisplay = document.getElementById("gameDisplay")
     var word = buildWord();
     var createNumLines = document.createElement("p");
     var element = document.getElementById("lines");
+
     for(var letter in word.resultWord) {
             var node = document.createTextNode(" ____ ");
             createNumLines.appendChild(node);
-        }
+    }
 
-    element.appendChild(createNumLines);
+    //element.appendChild(createNumLines);
+    element.innerHTML = createNumLines.innerHTML;
     gameDisplay.style.visibility = 'visible';
 
     window.removeEventListener("keypress", keyPresses, false);
     window.addEventListener("keypress", function(e){ guessing(e,word) },false);
 }
+
 function keyCommand_I () {
 
     var instructions = document.getElementById("instructions");
@@ -434,8 +411,8 @@ function guessing(e,word) {
         }
     }
 
-    var createNumLines = document.createElement("p");
-    var element = document.getElementById("lines");
+    //var createNumLines = document.createElement("p");
+    //var element = document.getElementById("lines");
 
     for (var display in word.dashed) {
 
