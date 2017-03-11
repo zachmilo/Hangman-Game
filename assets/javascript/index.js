@@ -402,8 +402,6 @@ function guessing(e, word) {
     var createNumLines = document.createElement("p");
     var element = document.getElementById("lines");
 
-    console.log(word);
-
     for (var letter in word.resultWord) {
         if (e.key === word.resultWord.charAt(letter)) {
 
